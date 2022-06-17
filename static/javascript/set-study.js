@@ -93,6 +93,7 @@ $(document).ready(function(){
     function nextCard() {
         // console.log("clicking nextCard");
         card_num++;
+        side_num=1;
         // console.log({card_num: card_num, total_cards: total_cards});
         if (card_num >= total_cards) {
             loadDone(set_id, total_cards);
@@ -104,6 +105,7 @@ $(document).ready(function(){
     function prevCard() {
         // console.log("clicking prevCard");
         card_num--;
+        side_num=1;
         if (card_num < 0) {
             card_num = 0;
             return;
