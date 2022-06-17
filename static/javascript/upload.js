@@ -120,7 +120,7 @@ function readFile(file) {
   
             });
 
-
+            window.scrollTo(0, document.body.scrollHeight);
         }
 
       }).filter(value => value);
