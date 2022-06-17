@@ -26,6 +26,19 @@
             <input type="checkbox" class="form-control" id="public" name="public" data-toggle="toggle" data-on="Public" data-off="Private" data-onstyle="secondary" data-offstyle="light"
             {% if set.public %} checked {% endif %}>
         </div>
+
+        <div class="mb-3">
+            <div class="card">
+                <div class="card-header">
+                    File Upload
+                </div>
+                <div class="card-body" id="drop-area">
+                    <p class="card-text">Drop your txt file here to add new rows</p>
+                    </div>
+                </div>
+            <script type="text/javascript" src="{{ url_for('static', filename='javascript/upload.js') }}"></script>
+        </div>
+
         <div class="form-group">
             <label for="cell[0][0]">Card Information</label>
             <table id="setTable">
