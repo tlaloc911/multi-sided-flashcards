@@ -77,8 +77,8 @@
     <hr>
 
     <div class="progress position-relative" style="height: 22px">
-      <div class="progress-bar" role="progressbar"
-           style="width: {{ 1/ set.num_cards() *100 }}%" aria-valuenow="{{ 1/ set.num_cards() *100 }}" aria-valuemin="0" aria-valuemax="100">1/{{ set.num_cards() }} cards studied</div>
+   <div id = "progress-bar" class="progress-bar" role="progressbar"
+        style="width: {{ 1/ set.num_cards() *100 }}%" aria-valuenow="{{ 1/ set.num_cards() *100 }}" aria-valuemin="0" aria-valuemax="100">1/{{ set.num_cards() }} cards studied</div>
     </div>
 
     {#    Settings Modal #}
