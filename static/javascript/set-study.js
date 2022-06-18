@@ -24,7 +24,7 @@ function loadCard(set_id, side_num, card_num, total_cards, sides, cards, side_or
                 }
             });
     }
-    $(".progress-bar")
+    $("#progress-bar")
         .css("width", (card_num+1)/total_cards*100 + "%")
         .attr("aria-valuenow", (card_num+1)/total_cards*100)
         .text(card_num+1 + "/" + total_cards + " cards studied");
@@ -49,7 +49,7 @@ function loadDone(set_id, total_cards) {
                 $( "#body" ).html( msg + xhr.status + " " + xhr.statusText );
             }
         });
-    $(".progress-bar")
+    $("#progress-bar")
         .css("width", "100%")
         .attr("aria-valuenow", 100)
         .text("All cards studied!");
@@ -245,7 +245,7 @@ $(document).ready(function(){
 
 function Playing() {
 
-    if (remainingTime>1)
+    if (remainingTime>0)
     {
         remainingTime--;
     }
@@ -260,6 +260,10 @@ function Playing() {
         }
         remainingTime= side_time[side_num];
     }
+
+    let bar = document.getElementById('timer');
+    bar.style.width = (remainingTime/side_time[side_num]*100) + "%";
+              	bar.innerText = remainingTime+ " secs";
   }
   
 
@@ -318,4 +322,3 @@ function Playing() {
         }
     });
 });
-
