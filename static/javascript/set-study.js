@@ -1,3 +1,6 @@
+let intervalID =0;
+let remainingTime =0;
+
 // Displays a specific card and side
 function loadCard(set_id, side_num, card_num, total_cards, sides, cards, side_order) {
     let nextSide = side_num+1 < sides.length ? sides[side_order[side_num+1]] : sides[side_order[1]];
@@ -29,6 +32,15 @@ function loadCard(set_id, side_num, card_num, total_cards, sides, cards, side_or
 
 // Displays "studying complete" UI
 function loadDone(set_id, total_cards) {
+
+
+    if (intervalID!=0)
+    {
+        window.clearInterval(intervalID);
+        intervalID=0;
+    }
+
+
     $("#body").load("../../api/study_done?set=" + set_id,
         function( response, status, xhr ) {
             if ( status == "error" ) {
@@ -55,18 +67,23 @@ $(document).ready(function(){
     let max_occur = pathArray.length;
     let set_id = pathArray[Number(max_occur-2)];
     let total_sides, total_cards, sides, cards, cards_shuffled;
+    let total_total_cards;
+
     let side_order = {};
+    let side_time = {};
     $.get("../../api/set_info?set=" + set_id, function(data, status){
         if ( status == "error" ) {
             console.error("Error occured: " + xhr.status + " " + xhr.statusText);
         } else {
             total_sides = data.num_sides;
             total_cards = data.num_cards;
+            total_total_cards = total_cards;
             sides = data.sides;
             cards = data.cards;
             cards_shuffled = cards;
             for (i=1; i<=total_sides; i++) {
                 side_order[i] = i;
+                side_time[i]=0;
             }
 
         }
@@ -135,13 +152,116 @@ $(document).ready(function(){
         side_num = 1;
         card_num = 0;
         loadCard(set_id, side_num, card_num, total_cards, sides, cards_shuffled, side_order);
+
+        if (intervalID!=0)
+        {
+            window.clearInterval(intervalID);
+            intervalID=0;
+        }
+
+    }
+
+
+    function selectButtom(buttname)
+    {
+        document.getElementById('restore').classList.remove('btn-primary');
+        document.getElementById('shuffle').classList.remove('btn-primary');
+        document.getElementById('pick').classList.remove('btn-primary');
+        document.getElementById('play').classList.remove('btn-primary');
+
+        document.getElementById('restore').classList.remove('btn-light');
+        document.getElementById('shuffle').classList.remove('btn-light');
+        document.getElementById('pick').classList.remove('btn-light');
+        document.getElementById('play').classList.remove('btn-light');
+
+
+        document.getElementById(buttname).classList.add('btn-primary');
     }
 
     function shuffle() {
         // console.log("shuffling cards");
         shuffleArray(cards_shuffled);
         restart();
+
+        selectButtom('pick');
+
+        
     }
+
+    function restore() {
+        console.log("restoring");
+        cards_shuffled = cards;
+        total_cards = total_total_cards;
+        restart();
+
+        selectButtom('shuffle');
+
+    }
+        
+    function pick() {
+        if (total_total_cards > 20)
+        {
+
+            total_cards=20;
+            restart();
+        }
+
+        selectButtom('play');
+
+    }
+
+    function play() {
+
+        for(i=1;i<=total_sides;i++)
+        {
+
+            let textinput = document.getElementById('sideTime' + i).value;
+            let seconds = 10;
+            if(textinput)
+            {
+                if (!isNaN(textinput))
+                {
+                    seconds = parseInt(textinput);
+                }
+            }
+            side_time[side_order[i]]= seconds;
+        }
+
+
+        if (intervalID!=0)
+        {
+            window.clearInterval(intervalID);
+            intervalID=0;
+        }
+        else
+        {
+            remainingTime= side_time[side_num];
+            intervalID = window.setInterval(Playing, 1000);
+        }
+        selectButtom('restore');
+
+    }
+
+
+function Playing() {
+
+    if (remainingTime>1)
+    {
+        remainingTime--;
+    }
+    else{
+        if(side_num < total_sides)
+        {
+            nextSide();
+        }
+        else
+        {
+            nextCard();
+        }
+        remainingTime= side_time[side_num];
+    }
+  }
+  
 
     // set click handlers
     $("#body").on("click", "#nextCard", function() {
@@ -161,6 +281,15 @@ $(document).ready(function(){
     });
     $("#options").on("click", "#shuffle", function() {
         shuffle();
+    });
+    $("#options").on("click", "#restore", function() {
+        restore();
+    });
+    $("#options").on("click", "#pick", function() {
+        pick();
+    });
+    $("#options").on("click", "#play", function() {
+        play();
     });
 
     // set key handlers
@@ -189,3 +318,4 @@ $(document).ready(function(){
         }
     });
 });
+
