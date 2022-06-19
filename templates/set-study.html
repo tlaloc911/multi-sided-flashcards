@@ -13,9 +13,9 @@
                 <a href="{{url_for('set.set',set_id=set.id_num)}}"><button type="button" class="btn btn-secondary">Exit</button></a>
             </div>
             <div class="float-right">
-                <button type="button" class="btn btn-light" id="restore">Restore</button>
+                <button type="button" class="btn btn-light" id="reset">Reset</button>
                 <button type="button" class="btn btn-primary" id="shuffle">Shuffle</button>
-                <button type="button" class="btn btn-light" id="pick">Pick 20</button>
+                <button type="button" class="btn btn-light" id="pick">Pick Up</button>
                 <button type="button" class="btn btn-light" id="play">Play</button>
                 <button type="button" class="btn btn-light" data-toggle="modal" data-target="#infoModal">
                     <svg class="bi bi-question-circle-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -92,6 +92,8 @@
             </button>
           </div>
           <div class="modal-body">
+            <h6>Cards to pick</h6>
+            <input id="toPick" type="number"></input>
             <h6>Reorder Sides:</h6>
             <ul class="list-group" id="sideList">
                 {% for i in range(1, set.get_side_names()|length) %}

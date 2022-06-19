@@ -1,6 +1,6 @@
 let intervalID =0;
 let remainingTime =0;
-
+let toPick=20;
 // Displays a specific card and side
 function loadCard(set_id, side_num, card_num, total_cards, sides, cards, side_order) {
     let nextSide = side_num+1 < sides.length ? sides[side_order[side_num+1]] : sides[side_order[1]];
@@ -83,7 +83,8 @@ $(document).ready(function(){
             cards_shuffled = cards;
             for (i=1; i<=total_sides; i++) {
                 side_order[i] = i;
-                side_time[i]=0;
+                side_time[i]=10;
+                document.getElementById('sideTime' + i).value = side_time[i]
             }
 
         }
@@ -102,9 +103,39 @@ $(document).ready(function(){
         arr.map((currElement, index) => {
             side_order[index+1] = currElement;
         });
+
+        let textinput = document.getElementById('toPick').value;
+        toPick = 20;
+        if(textinput)
+        {
+            if (!isNaN(textinput))
+            {
+                toPick = parseInt(textinput);
+            }
+        }
+
+        for(i=1;i<=total_sides;i++)
+        {
+
+            let textinput = document.getElementById('sideTime' + i).value;
+            let seconds = 10;
+            if(textinput)
+            {
+                if (!isNaN(textinput))
+                {
+                    seconds = parseInt(textinput);
+                }
+            }
+            side_time[side_order[i]]= seconds;
+        }
+
         restart();
+
         $('#settingsModal').modal('hide');
     });
+
+    // $("#toPick").value=toPick;
+    document.getElementById("toPick").value = toPick;
 
     // Card/Side navigation
     function nextCard() {
@@ -164,12 +195,12 @@ $(document).ready(function(){
 
     function selectButtom(buttname)
     {
-        document.getElementById('restore').classList.remove('btn-primary');
+        document.getElementById('reset').classList.remove('btn-primary');
         document.getElementById('shuffle').classList.remove('btn-primary');
         document.getElementById('pick').classList.remove('btn-primary');
         document.getElementById('play').classList.remove('btn-primary');
 
-        document.getElementById('restore').classList.remove('btn-light');
+        document.getElementById('reset').classList.remove('btn-light');
         document.getElementById('shuffle').classList.remove('btn-light');
         document.getElementById('pick').classList.remove('btn-light');
         document.getElementById('play').classList.remove('btn-light');
@@ -188,7 +219,7 @@ $(document).ready(function(){
         
     }
 
-    function restore() {
+    function reset() {
         console.log("restoring");
         cards_shuffled = cards;
         total_cards = total_total_cards;
@@ -199,10 +230,10 @@ $(document).ready(function(){
     }
         
     function pick() {
-        if (total_total_cards > 20)
+        if (total_total_cards > toPick)
         {
 
-            total_cards=20;
+            total_cards=toPick;
             restart();
         }
 
@@ -211,22 +242,6 @@ $(document).ready(function(){
     }
 
     function play() {
-
-        for(i=1;i<=total_sides;i++)
-        {
-
-            let textinput = document.getElementById('sideTime' + i).value;
-            let seconds = 10;
-            if(textinput)
-            {
-                if (!isNaN(textinput))
-                {
-                    seconds = parseInt(textinput);
-                }
-            }
-            side_time[side_order[i]]= seconds;
-        }
-
 
         if (intervalID!=0)
         {
@@ -238,7 +253,7 @@ $(document).ready(function(){
             remainingTime= side_time[side_num];
             intervalID = window.setInterval(Playing, 1000);
         }
-        selectButtom('restore');
+        selectButtom('reset');
 
     }
 
@@ -286,8 +301,8 @@ function Playing() {
     $("#options").on("click", "#shuffle", function() {
         shuffle();
     });
-    $("#options").on("click", "#restore", function() {
-        restore();
+    $("#options").on("click", "#reset", function() {
+        reset();
     });
     $("#options").on("click", "#pick", function() {
         pick();
