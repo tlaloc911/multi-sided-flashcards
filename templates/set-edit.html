@@ -48,7 +48,7 @@
                     {% for i in range(set.num_sides()) %}
                         <th class="onHover">
                             <svg class="bi bi-dash-circle-fill hidden" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="lightsteelblue" xmlns="http://www.w3.org/2000/svg"
-                                id="removeCol[{{ i - 1 }}]" onclick="removeCol('setTable', {{ i }})">
+                                id="removeCol[{{ i }}]" onclick="removeCol('setTable', {{ i }})">
                               <path fill-rule="evenodd" d="M16 8A8 8 0 110 8a8 8 0 0116 0zM4 7.5a.5.5 0 000 1h8a.5.5 0 000-1H4z" clip-rule="evenodd"/>
                             </svg>
                         </th>
@@ -71,7 +71,7 @@
                 <tr>
                     <td class="onHover">
                         <svg class="bi bi-dash-circle-fill hidden" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="lightsteelblue" xmlns="http://www.w3.org/2000/svg"
-                            id="removeRow[1]" onclick="removeRow('setTable', {{ i }})">
+                            id="removeRow[{{ i + 1 }}]" onclick="removeRow('setTable', {{ i + 1 }})">
                           <path fill-rule="evenodd" d="M16 8A8 8 0 110 8a8 8 0 0116 0zM4 7.5a.5.5 0 000 1h8a.5.5 0 000-1H4z" clip-rule="evenodd"/>
                         </svg>
                     </td>

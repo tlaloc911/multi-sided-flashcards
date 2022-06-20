@@ -90,7 +90,7 @@ function renumber(rows, numRows, numCols) {
         // console.log("on row ", i);
         var currRow = rows[i];
         // console.log("editing a row", currRow);
-        for (var j=1; j<numCols-2; j++) {
+        for (var j=1; j<numCols-1; j++) {
             console.log("on col " + j);
             let cellName = 'cell[' + Number(i-1) + '][' + Number(j - 1) + ']';
             currRow.cells[j].children[0].setAttribute('name', cellName);
@@ -114,7 +114,7 @@ function removeRow(tableID, row) {
     }
     if (window.confirm("You are removing a row. This will remove all data in the row. " +
         "Are you sure you want to do this?")) {
-        document.getElementById(tableID).deleteRow(row);
+        document.getElementById(tableID).deleteRow(row+1);
         renumber(rows, numRows, numCols);
     }
 }
@@ -129,11 +129,12 @@ function removeCol(tableID, col) {
     if (window.confirm("You are removing a column. This will remove all data in the column. " +
         "Are you sure you want to do this?")) {
         let rows = document.getElementById(tableID).rows;
-        let numRows = document.getElementById(tableID).rows.length - 1;
-        for (var i = 0; i < numRows; i++) {
-            console.log('deleting cell', i)
+        let numRows = document.getElementById(tableID).rows.length;
+        for (var i = 0; i < numRows-1; i++) {
+       //     console.log('deleting cell', i);
             rows[i].deleteCell(col + 1);
         }
+        cols--;
         renumber(rows, numRows, cols);
     }
 }
