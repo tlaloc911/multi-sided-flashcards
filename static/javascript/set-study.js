@@ -265,14 +265,20 @@ function Playing() {
         remainingTime--;
     }
     else{
-        if(side_num < total_sides)
+        do
         {
-            nextSide();
-        }
-        else
-        {
-            nextCard();
-        }
+            if(side_num < total_sides)
+            {
+               
+                nextSide();
+            }
+            else
+            {
+                nextCard();
+            }
+    
+        }  while(side_time[side_num]==0 );
+
         remainingTime= side_time[side_num];
     }
 
