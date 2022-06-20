@@ -270,26 +270,34 @@ $(document).ready(function(){
     }
 
 
-function Playing() {
+
+    function Playing() {
 
     if (remainingTime>0)
     {
         remainingTime--;
+        tick_sound.play();
     }
     else{
         do
         {
             if(side_num < total_sides)
             {
-               
                 nextSide();
+                if(side_time[side_num]>0)
+                {
+                    tack_sound.play();
+                }
             }
             else
             {
                 nextCard();
+                if(side_time[side_num]>0)
+                {
+                    tock_sound.play();
+                }
             }
-    
-        }  while(side_time[side_num]==0 );
+        } while(side_time[side_num]==0 );
 
         remainingTime= side_time[side_num];
     }
@@ -354,4 +362,14 @@ function Playing() {
                 break;
         }
     });
+
+
+
+    const tick_sound = document.getElementById('tick_sound');
+    const tack_sound = document.getElementById('tack_sound');
+    const tock_sound = document.getElementById('tock_sound');
+
+
+
+
 });
