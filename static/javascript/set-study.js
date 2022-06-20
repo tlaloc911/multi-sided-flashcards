@@ -38,6 +38,8 @@ function loadDone(set_id, total_cards) {
     {
         window.clearInterval(intervalID);
         intervalID=0;
+        document.getElementById('play').textContent = "Play";
+
     }
 
 
@@ -188,6 +190,7 @@ $(document).ready(function(){
         {
             window.clearInterval(intervalID);
             intervalID=0;
+            document.getElementById('play').textContent = "Play";
         }
 
     }
@@ -247,13 +250,22 @@ $(document).ready(function(){
         {
             window.clearInterval(intervalID);
             intervalID=0;
+            document.getElementById('play').textContent = "Play";
+            selectButtom('play');
+
+
         }
         else
         {
-            remainingTime= side_time[side_num];
+            if (remainingTime==0) // to start the first time but take from current if unpaused
+            {
+                remainingTime= side_time[side_num];
+            }
             intervalID = window.setInterval(Playing, 1000);
+            document.getElementById('play').textContent = "Pause";
+            selectButtom('reset');
+
         }
-        selectButtom('reset');
 
     }
 
