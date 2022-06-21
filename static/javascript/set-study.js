@@ -1,6 +1,10 @@
 let intervalID =0;
 let remainingTime =0;
 let toPick=20;
+let toTick = true;
+let toTack = true;
+let toTock = true;
+
 // Displays a specific card and side
 function loadCard(set_id, side_num, card_num, total_cards, sides, cards, side_order) {
     let nextSide = side_num+1 < sides.length ? sides[side_order[side_num+1]] : sides[side_order[1]];
@@ -95,6 +99,11 @@ $(document).ready(function(){
     let card_num = 0;
 
 
+    document.getElementById('checkSecond').checked = toTick;
+    document.getElementById('checkSide').checked = toTack;
+    document.getElementById('checkCard').checked = toTock;
+
+
     let el = document.getElementById('sideList');
     let sortable = Sortable.create(el, {animation: 150});
 
@@ -107,6 +116,11 @@ $(document).ready(function(){
         });
 
         let textinput = document.getElementById('toPick').value;
+
+        toTick = document.getElementById('checkSecond').checked;
+        toTack = document.getElementById('checkSide').checked;
+        toTock = document.getElementById('checkCard').checked;
+
         toPick = 20;
         if(textinput)
         {
@@ -259,7 +273,7 @@ $(document).ready(function(){
         {
             if (remainingTime==0) // to start the first time but take from current if unpaused
             {
-                remainingTime= side_time[side_num];
+                remainingTime= side_time[side_num] + 1;
             }
             intervalID = window.setInterval(Playing, 1000);
             document.getElementById('play').textContent = "Pause";
@@ -273,10 +287,13 @@ $(document).ready(function(){
 
     function Playing() {
 
-    if (remainingTime>0)
+    if (remainingTime>1)
     {
         remainingTime--;
-        tick_sound.play();
+        if(toTick)
+        {
+            tick_sound.play();
+        }
     }
     else{
         do
@@ -286,7 +303,17 @@ $(document).ready(function(){
                 nextSide();
                 if(side_time[side_num]>0)
                 {
-                    tack_sound.play();
+                    if(toTack)
+                    {
+                        tack_sound.play();
+                    }
+                    else
+                    {
+                        if(toTick)
+                        {
+                            tick_sound.play();
+                        }
+                    }
                 }
             }
             else
@@ -294,7 +321,24 @@ $(document).ready(function(){
                 nextCard();
                 if(side_time[side_num]>0)
                 {
+                    if(toTock)
+                    {
                     tock_sound.play();
+                    }
+                    else
+                    {
+                        if(toTack)
+                        {
+                            tack_sound.play();
+                        }
+                        else
+                        {
+                            if(toTick)
+                            {
+                                tick_sound.play();
+                            }
+                        }
+                    }
                 }
             }
         } while(side_time[side_num]==0 );
