@@ -165,6 +165,8 @@ $(document).ready(function(){
             return;
         }
         loadCard(set_id, side_num, card_num, total_cards, sides, cards_shuffled, side_order);
+        remainingTime= side_time[side_num];
+        drawRemaining();
     }
     function prevCard() {
         // console.log("clicking prevCard");
@@ -175,6 +177,8 @@ $(document).ready(function(){
             return;
         }
         loadCard(set_id, side_num, card_num, total_cards, sides, cards_shuffled, side_order);
+        remainingTime= side_time[side_num];
+        drawRemaining();
     }
     function nextSide() {
         // console.log("clicking nextSide");
@@ -185,6 +189,8 @@ $(document).ready(function(){
             side_num = 1; // loops around
         }
         loadCard(set_id, side_num, card_num, total_cards, sides, cards_shuffled, side_order);
+        remainingTime= side_time[side_num];
+        drawRemaining();
     }
     function prevSide() {
         if (card_num == total_cards) return;
@@ -193,12 +199,16 @@ $(document).ready(function(){
             side_num = total_sides; // loops around
         }
         loadCard(set_id, side_num, card_num, total_cards, sides, cards_shuffled, side_order);
+        remainingTime= side_time[side_num];
+        drawRemaining();
     }
     function restart() {
         // console.log("clicking restart");
         side_num = 1;
         card_num = 0;
         loadCard(set_id, side_num, card_num, total_cards, sides, cards_shuffled, side_order);
+        remainingTime= side_time[side_num];
+        drawRemaining();
 
         if (intervalID!=0)
         {
@@ -224,6 +234,13 @@ $(document).ready(function(){
 
 
         document.getElementById(buttname).classList.add('btn-primary');
+    }
+
+    function drawRemaining()
+    {
+        let bar = document.getElementById('timer');
+        bar.style.width = (remainingTime/side_time[side_num]*100) + "%";
+        bar.innerText = remainingTime+ " secs";
     }
 
     function shuffle() {
@@ -287,45 +304,22 @@ $(document).ready(function(){
 
     function Playing() {
 
-    if (remainingTime>1)
-    {
-        remainingTime--;
-        if(toTick)
+        if (remainingTime>1)
         {
-            tick_sound.play();
-        }
-    }
-    else{
-        do
-        {
-            if(side_num < total_sides)
+            remainingTime--;
+            if(toTick)
             {
-                nextSide();
-                if(side_time[side_num]>0)
-                {
-                    if(toTack)
-                    {
-                        tack_sound.play();
-                    }
-                    else
-                    {
-                        if(toTick)
-                        {
-                            tick_sound.play();
-                        }
-                    }
-                }
+                tick_sound.play();
             }
-            else
+        }
+        else
+        {
+            do
             {
-                nextCard();
-                if(side_time[side_num]>0)
+                if(side_num < total_sides)
                 {
-                    if(toTock)
-                    {
-                    tock_sound.play();
-                    }
-                    else
+                    nextSide();
+                    if(side_time[side_num]>0)
                     {
                         if(toTack)
                         {
@@ -340,16 +334,39 @@ $(document).ready(function(){
                         }
                     }
                 }
-            }
-        } while(side_time[side_num]==0 );
+                else
+                {
+                    nextCard();
+                    if(side_time[side_num]>0)
+                    {
+                        if(toTock)
+                        {
+                        tock_sound.play();
+                        }
+                        else
+                        {
+                            if(toTack)
+                            {
+                                tack_sound.play();
+                            }
+                            else
+                            {
+                                if(toTick)
+                                {
+                                    tick_sound.play();
+                                }
+                            }
+                        }
+                    }
+                }
+            } while(side_time[side_num]==0 );
 
-        remainingTime= side_time[side_num];
+            remainingTime= side_time[side_num];
+        }
+
+        drawRemaining();
+    
     }
-
-    let bar = document.getElementById('timer');
-    bar.style.width = (remainingTime/side_time[side_num]*100) + "%";
-              	bar.innerText = remainingTime+ " secs";
-  }
   
 
     // set click handlers
